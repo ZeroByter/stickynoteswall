@@ -49,8 +49,6 @@ export default class App extends React.Component {
 	handleTouchStart = e => {
 		let touch = e.touches[0]
 
-		if (!touch.target.classList.contains("notes-master-container")) return
-
 		this.isMouseDown = true
 		this.mouseDownPosition = { x: touch.pageX, y: touch.pageY }
 		this.mouseDownNotesPosition = { x: this.state.viewNotesX, y: this.state.viewNotesY }
