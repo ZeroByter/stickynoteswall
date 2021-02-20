@@ -1,0 +1,19 @@
+.sticky-note-container{
+    z-index: 0;
+    position: absolute;
+    background: rgb(255, 255, 97);
+    padding: 10px;
+    max-width: 170px;
+
+    .date{
+        font-size: 10px;
+        transition: font-size 0.2s;
+    }
+    .date:hover{
+        font-size: 14px;
+    }
+
+    .written-by{
+        font-weight: bold;
+    }
+}
