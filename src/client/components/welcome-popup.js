@@ -23,7 +23,7 @@ export default class WelcomePopup extends React.PureComponent {
                     <header>Welcome to StickyNotesWall!</header>
                     <p>Here, you can write whatever you want, where-ever you want!</p>
                     <p>Drag your mouse across the wall to move around!</p>
-                    <p>Click on the wall to create a new note!</p>
+                    <p>Click on the wall to create a new note!<br />All notes are permanent and non-editable.</p>
                     <p>This project is <a href="https://www.github.com/ZeroByter/stickynoteswall" target="_blank">open-sourced on GitHub!</a> Feel free to look around and contribute as you wish!</p>
                     <p><i>Write nice things, and have fun! (click anywhere to close this popup)</i></p>
                 </div>
