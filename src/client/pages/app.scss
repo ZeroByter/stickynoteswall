@@ -1,8 +1,13 @@
+html, body{
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
 body{
     margin: 0px;
     user-select: none;
     font-family: "Arial";
-    overflow: hidden;
+    position: relative;
 }
 
 .main-page{

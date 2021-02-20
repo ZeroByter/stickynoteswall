@@ -46,11 +46,32 @@ export default class App extends React.Component {
 		this.mouseDownPosition = { x: e.pageX, y: e.pageY }
 		this.mouseDownNotesPosition = { x: this.state.viewNotesX, y: this.state.viewNotesY }
 	}
+	handleTouchStart = e => {
+		let touch = e.touches[0]
+
+		if (!touch.target.classList.contains("notes-master-container")) return
+
+		this.isMouseDown = true
+		this.mouseDownPosition = { x: touch.pageX, y: touch.pageY }
+		this.mouseDownNotesPosition = { x: this.state.viewNotesX, y: this.state.viewNotesY }
+	}
 
 	handleMouseMove = e => {
 		if (!this.isMouseDown) return
 
 		let mousePosition = { x: e.pageX, y: e.pageY }
+
+		this.setState({
+			viewNotesX: this.mouseDownNotesPosition.x + (mousePosition.x - this.mouseDownPosition.x),
+			viewNotesY: this.mouseDownNotesPosition.y + (mousePosition.y - this.mouseDownPosition.y)
+		})
+	}
+	handleTouchMove = e => {
+		let touch = e.touches[0]
+
+		if (!this.isMouseDown) return
+
+		let mousePosition = { x: touch.pageX, y: touch.pageY }
 
 		this.setState({
 			viewNotesX: this.mouseDownNotesPosition.x + (mousePosition.x - this.mouseDownPosition.x),
@@ -80,7 +101,14 @@ export default class App extends React.Component {
 		return (
 			<div className="main-page">
 				<WelcomePopup />
-				<div className="notes-master-container" onMouseDown={this.handleMouseDown} onMouseMove={this.handleMouseMove} onMouseUp={this.handleMouseUp}>
+				<div
+					className="notes-master-container"
+					onMouseDown={this.handleMouseDown}
+					onMouseMove={this.handleMouseMove}
+					onMouseUp={this.handleMouseUp}
+					onTouchStart={this.handleTouchStart}
+					onTouchMove={this.handleTouchMove}
+				>
 					<div className="notes-container" style={{ left: this.state.viewNotesX, top: this.state.viewNotesY }}>
 						{this.state.tempCreationNote}
 						{displayNotes}
