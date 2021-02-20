@@ -35,25 +35,22 @@ connection.query("SELECT data FROM notesdata WHERE id='notes'", (error, results,
 })
 
 setInterval(() => {
+    if(!notesDirty) return
+    notesDirty = false
+
     connection.query("UPDATE notesdata SET data=? WHERE id='notes'", [JSON.stringify(notes)], (error, results, fields) => {
         if (error) throw error
     })
 }, 30 * 1000)
 
 let notes = {}
-
-let sockets = {}
+let notesDirty = false
 
 let emitNotes = (target) => {
     target.emit("allNotes", notes)
 }
 
 io.on("connection", socket => {
-    sockets[socket.id] = {
-        socket,
-        cursorPosition: null,
-    }
-
     socket.emit("getId", socket.id)
 
     emitNotes(socket)
@@ -65,6 +62,7 @@ io.on("connection", socket => {
             message: validateNoteMessage(data.message),
             created: new Date().getTime()
         }
+        notesDirty = true
 
         emitNotes(io)
     })
