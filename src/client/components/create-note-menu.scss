@@ -20,13 +20,37 @@
 
     .menu {
         z-index: 101;
-        background: red;
+        background: rgb(255, 232, 128);
         height: fit-content;
+        padding: 10px;
 
-        input, textarea {
+        input,
+        textarea {
             display: block;
             width: 100%;
             box-sizing: border-box;
+            margin: 6px 0px;
+            outline: none;
+            border-radius: 0px;
+            border: 2px solid black;
+            font-family: "Consolasa";
+        }
+
+        button {
+            outline: none;
+            border-radius: 0px;
+            border: 2px solid black;
+            background: white;
+            cursor: pointer;
+        }
+        button:hover{
+            background: rgba(245, 245, 245);
+        }
+        button:active{
+            background: rgba(235, 235, 235);
+        }
+        button[type="cancel"] {
+            float: right;
         }
     }
 }

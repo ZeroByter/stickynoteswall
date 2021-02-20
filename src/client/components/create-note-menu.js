@@ -1,5 +1,6 @@
 import React from "react"
 import { validateNoteMessage, validateNoteName } from "../../shared/constants";
+import App from "../pages/App";
 import "./create-note-menu.scss"
 
 export default class CreateNoteMenu extends React.PureComponent {
@@ -12,6 +13,13 @@ export default class CreateNoteMenu extends React.PureComponent {
             isOpen: true,
         })
         CreateNoteMenu.singleton.newNoteCoordinates = coordinates
+
+        App.setTempCreationNote({
+            position: coordinates,
+            name: "",
+            message: "",
+            created: new Date().getTime()
+        })
     }
 
     componentDidMount() {
@@ -31,18 +39,34 @@ export default class CreateNoteMenu extends React.PureComponent {
             nameInput: "",
             messageInput: "",
         })
+
+        App.setTempCreationNote(null)
     }
 
     handleNameChange = e => {
-        this.setState({ nameInput: validateNoteName(e.target.value) })
+        this.setState({ nameInput: validateNoteName(e.target.value) }, () => {
+            App.setTempCreationNote({
+                position: this.newNoteCoordinates,
+                name: this.state.nameInput,
+                message: this.state.messageInput,
+                created: new Date().getTime()
+            })
+        })
     }
 
     handleMessageChange = e => {
-        this.setState({ messageInput: validateNoteMessage(e.target.value) })
+        this.setState({ messageInput: validateNoteMessage(e.target.value) }, () => {
+            App.setTempCreationNote({
+                position: this.newNoteCoordinates,
+                name: this.state.nameInput,
+                message: this.state.messageInput,
+                created: new Date().getTime()
+            })
+        })
     }
 
     handleCreateNote = () => {
-        if(this.state.messageInput.replace(/ /, "") == ""){
+        if (this.state.messageInput.replace(/ /, "") == "") {
             alert("must input message")
             return
         }
@@ -66,7 +90,7 @@ export default class CreateNoteMenu extends React.PureComponent {
                     <input autoFocus placeholder="name" onChange={this.handleNameChange} value={this.state.nameInput} />
                     <textarea placeholder="message" onChange={this.handleMessageChange} value={this.state.messageInput}></textarea>
                     <button onClick={this.handleCreateNote}>create</button>
-                    <button onClick={this.closeMenu}>cancel</button>
+                    <button type="cancel" onClick={this.closeMenu}>cancel</button>
                 </div>
             </div>
         )

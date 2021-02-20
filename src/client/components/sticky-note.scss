@@ -1,19 +1,20 @@
-.sticky-note-container{
+.sticky-note-container {
     z-index: 0;
     position: absolute;
     background: rgb(255, 255, 97);
     padding: 10px;
     max-width: 170px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
 
-    .date{
-        font-size: 10px;
+    .date {
+        font-size: 8px;
         transition: font-size 0.2s;
     }
-    .date:hover{
+    .date:hover {
         font-size: 14px;
     }
 
-    .written-by{
+    .written-by {
         font-weight: bold;
     }
 }

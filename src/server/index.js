@@ -38,7 +38,7 @@ setInterval(() => {
     connection.query("UPDATE notesdata SET data=? WHERE id='notes'", [JSON.stringify(notes)], (error, results, fields) => {
         if (error) throw error
     })
-}, 5 * 1000)
+}, 30 * 1000)
 
 let notes = {}
 

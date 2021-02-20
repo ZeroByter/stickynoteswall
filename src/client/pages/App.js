@@ -1,19 +1,39 @@
 import React from 'react';
 import CreateNoteMenu from '../components/create-note-menu';
 import StickyNote from '../components/sticky-note';
+import WelcomePopup from '../components/welcome-popup';
 import './app.scss';
 
 export default class App extends React.Component {
+	static singleton
+
+	static setTempCreationNote = note => {
+		if (note == null) {
+			App.singleton.setState({
+				tempCreationNote: null
+			})
+
+			return
+		}
+
+		App.singleton.setState({
+			tempCreationNote: <StickyNote key={"temp"} note={note} />
+		})
+	}
+
 	state = {
 		viewNotesX: 0,
 		viewNotesY: 0,
-		notes: {}
+		notes: {},
+		tempCreationNote: null,
 	}
 	mouseDownPosition = { x: 0, y: 0 }
 	mouseDownNotesPosition = { x: 0, y: 0 }
 	isMouseDown = false
 
 	componentDidMount() {
+		App.singleton = this
+
 		this.props.socket.on("allNotes", notes => {
 			this.setState({ notes })
 		})
@@ -59,8 +79,10 @@ export default class App extends React.Component {
 
 		return (
 			<div className="main-page">
+				<WelcomePopup />
 				<div className="notes-master-container" onMouseDown={this.handleMouseDown} onMouseMove={this.handleMouseMove} onMouseUp={this.handleMouseUp}>
 					<div className="notes-container" style={{ left: this.state.viewNotesX, top: this.state.viewNotesY }}>
+						{this.state.tempCreationNote}
 						{displayNotes}
 					</div>
 				</div>
