@@ -54,6 +54,8 @@ export default class App extends React.Component {
 		this.isMouseDown = true
 		this.mouseDownPosition = { x: touch.pageX, y: touch.pageY }
 		this.mouseDownNotesPosition = { x: this.state.viewNotesX, y: this.state.viewNotesY }
+
+		return false
 	}
 
 	handleMouseMove = e => {
@@ -77,6 +79,8 @@ export default class App extends React.Component {
 			viewNotesX: this.mouseDownNotesPosition.x + (mousePosition.x - this.mouseDownPosition.x),
 			viewNotesY: this.mouseDownNotesPosition.y + (mousePosition.y - this.mouseDownPosition.y)
 		})
+
+		return false
 	}
 
 	handleMouseUp = e => {
