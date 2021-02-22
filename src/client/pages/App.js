@@ -92,6 +92,10 @@ export default class App extends React.Component {
 		}
 	}
 
+	handleMouseLeave = e => {
+		this.isMouseDown = false
+	}
+
 	render() {
 		let displayNotes = Object.entries(this.state.notes).map(entry => {
 			let id = entry[0]
@@ -108,6 +112,7 @@ export default class App extends React.Component {
 					onMouseDown={this.handleMouseDown}
 					onMouseMove={this.handleMouseMove}
 					onMouseUp={this.handleMouseUp}
+					onMouseLeave={this.handleMouseLeave}
 					onTouchStart={this.handleTouchStart}
 					onTouchMove={this.handleTouchMove}
 				>

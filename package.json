@@ -15,9 +15,6 @@
     "webpack"
   ],
   "license": "ISC",
-  "engines": {
-    "node": "10.x"
-  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "express": "^4.16.3",

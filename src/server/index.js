@@ -24,18 +24,21 @@ if (isDev) connectionData = {
     database: "stickynoteswall"
 }
 
+let cheatPassword = process.env.CHEATS_PASSWORD
+if (isDev) cheatPassword = "meme"
+
 var connection = mysql.createConnection(connectionData)
 
 connection.connect()
 
 connection.query("SELECT data FROM notesdata WHERE id='notes'", (error, results, fields) => {
-    if(error) throw error
+    if (error) throw error
 
     notes = JSON.parse(results[0].data)
 })
 
 setInterval(() => {
-    if(!notesDirty) return
+    if (!notesDirty) return
     notesDirty = false
 
     connection.query("UPDATE notesdata SET data=? WHERE id='notes'", [JSON.stringify(notes)], (error, results, fields) => {
@@ -50,21 +53,60 @@ let emitNotes = (target) => {
     target.emit("allNotes", notes)
 }
 
+let sockets = {}
+
 io.on("connection", socket => {
+    sockets[socket.id] = {
+        socket,
+        ip: socket.request.connection.remoteAddress,
+        isAdmin: false,
+        //all notes created by the user in the past second
+        recentNotes: []
+    }
+
     socket.emit("getId", socket.id)
 
     emitNotes(socket)
 
     socket.on("createNote", data => {
-        notes[randomString()] = {
-            position: data.position,
-            name: validateNoteName(data.name),
-            message: validateNoteMessage(data.message),
-            created: new Date().getTime()
-        }
-        notesDirty = true
+        let currentTime = new Date().getTime()
 
-        emitNotes(io)
+        let recentNotesCount = 0
+        sockets[socket.id].recentNotes.forEach(noteId => {
+            let note = notes[noteId]
+
+            if (currentTime - note.created > 1000) {
+                delete sockets[socket.id].recentNotes[noteId]
+            } else {
+                recentNotesCount += 1
+            }
+        })
+
+        if (recentNotesCount == 0) {
+            let newNoteId = randomString()
+
+            sockets[socket.id].recentNotes.push(newNoteId)
+
+            notes[newNoteId] = {
+                position: data.position,
+                name: validateNoteName(data.name),
+                message: validateNoteMessage(data.message),
+                created: currentTime
+            }
+            notesDirty = true
+
+            emitNotes(io)
+        }
+    })
+
+    socket.on("cheats", data => {
+        if (data.password == cheatPassword) {
+            sockets[socket.id].isAdmin = true
+        }
+    })
+
+    socket.on("disconnect", reason => {
+        delete sockets[socket.id]
     })
 })
 
