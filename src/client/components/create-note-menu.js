@@ -80,6 +80,12 @@ export default class CreateNoteMenu extends React.PureComponent {
         this.closeMenu()
     }
 
+    handleKeyDown = e => {
+        if(e.keyCode === 13){
+            this.handleCreateNote()
+        }
+    }
+
     render() {
         if (!this.state.isOpen) return null
 
@@ -87,8 +93,8 @@ export default class CreateNoteMenu extends React.PureComponent {
             <div className="create-note-container">
                 <div className="background-cover" onClick={this.closeMenu}></div>
                 <div className="menu">
-                    <input autoFocus placeholder="name" onChange={this.handleNameChange} value={this.state.nameInput} />
-                    <textarea placeholder="message" onChange={this.handleMessageChange} value={this.state.messageInput}></textarea>
+                    <input placeholder="name" onChange={this.handleNameChange} onKeyDown={this.handleKeyDown} value={this.state.nameInput} />
+                    <textarea autoFocus placeholder="message" onChange={this.handleMessageChange} onKeyDown={this.handleKeyDown} value={this.state.messageInput}></textarea>
                     <button onClick={this.handleCreateNote}>create</button>
                     <button type="cancel" onClick={this.closeMenu}>cancel</button>
                 </div>

@@ -53,6 +53,10 @@ let emitNotes = (target) => {
     target.emit("allNotes", notes)
 }
 
+let emitNewNote = (target, noteId) => {
+    target.emit("newNote", noteId, notes[noteId])
+}
+
 let sockets = {}
 
 io.on("connection", socket => {
@@ -95,7 +99,7 @@ io.on("connection", socket => {
             }
             notesDirty = true
 
-            emitNotes(io)
+            emitNewNote(io, newNoteId)
         }
     })
 

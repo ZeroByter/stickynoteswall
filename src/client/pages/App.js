@@ -37,6 +37,14 @@ export default class App extends React.Component {
 		this.props.socket.on("allNotes", notes => {
 			this.setState({ notes })
 		})
+
+		this.props.socket.on("newNote", (newNoteId, newNote) => {
+			this.setState(oldState => {
+				oldState.notes[newNoteId] = newNote
+
+				return { notes: oldState.notes }
+			})
+		})
 	}
 
 	handleMouseDown = e => {
